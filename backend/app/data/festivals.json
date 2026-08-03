@@ -1,0 +1,142 @@
+[
+  {
+    "festival": "Makar Sankranti / Pongal / Uttarayan / Bihu",
+    "approx_date_2026": "2026-01-14",
+    "region": ["TN-01", "AP-01", "TS-01", "GJ-01", "AS-01", "OD-01", "BR-01", "UP-01", "MP-01"],
+    "category": "Harvest",
+    "retail_impact": "Regional new-year and harvest festival; spikes in apparel, kitchenware, and home decor across most of India, timing varies by state name and ritual."
+  },
+  {
+    "festival": "Republic Day",
+    "approx_date_2026": "2026-01-26",
+    "region": ["All India"],
+    "category": "National",
+    "retail_impact": "Moderate uplift in electronics and appliance sales tied to national sale events."
+  },
+  {
+    "festival": "Vasant Panchami",
+    "approx_date_2026": "2026-01-23",
+    "region": ["UP-01", "BR-01", "WB-01"],
+    "category": "Hindu",
+    "retail_impact": "Yellow-themed apparel and stationery demand; minor regional uplift."
+  },
+  {
+    "festival": "Holi",
+    "approx_date_2026": "2026-03-04",
+    "region": ["All India"],
+    "category": "Hindu",
+    "retail_impact": "Sharp national spike in colors, water guns, ethnic wear, and sweets; historically among the largest pan-India festival sales events."
+  },
+  {
+    "festival": "Ugadi / Gudi Padwa",
+    "approx_date_2026": "2026-03-19",
+    "region": ["MH-01", "KA-01", "AP-01", "TS-01"],
+    "category": "New Year",
+    "retail_impact": "Regional new-year festival driving apparel, home decor, and gold-imitation jewelry sales."
+  },
+  {
+    "festival": "Baisakhi",
+    "approx_date_2026": "2026-04-14",
+    "region": ["PB-01"],
+    "category": "Harvest",
+    "retail_impact": "Apparel and home textile uplift concentrated in Punjab and neighboring states."
+  },
+  {
+    "festival": "Vishu",
+    "approx_date_2026": "2026-04-14",
+    "region": ["KL-01"],
+    "category": "New Year",
+    "retail_impact": "Kerala New Year; gold-imitation jewelry and apparel spike."
+  },
+  {
+    "festival": "Akshaya Tritiya",
+    "approx_date_2026": "2026-04-19",
+    "region": ["All India"],
+    "category": "Hindu",
+    "retail_impact": "Strong national uplift in jewelry (including imitation/fashion jewelry) and auspicious-purchase categories."
+  },
+  {
+    "festival": "Rath Yatra",
+    "approx_date_2026": "2026-06-16",
+    "region": ["OD-01", "WB-01"],
+    "category": "Hindu",
+    "retail_impact": "Regional uplift in apparel and religious/festive goods concentrated in Odisha and West Bengal."
+  },
+  {
+    "festival": "Aadi Sale / Aadi Perukku",
+    "approx_date_2026": "2026-07-17",
+    "region": ["TN-01"],
+    "category": "Regional Sale Season",
+    "retail_impact": "Month-long Tamil Nadu retail sale tradition; heavy apparel, gold-imitation jewelry, and home essentials promotions."
+  },
+  {
+    "festival": "Raksha Bandhan",
+    "approx_date_2026": "2026-08-28",
+    "region": ["All India"],
+    "category": "Hindu",
+    "retail_impact": "National spike in gifting categories: apparel, watches, sweets, accessories."
+  },
+  {
+    "festival": "Independence Day",
+    "approx_date_2026": "2026-08-15",
+    "region": ["All India"],
+    "category": "National",
+    "retail_impact": "Major national sale event across nearly all categories; platform-wide promotional anchor."
+  },
+  {
+    "festival": "Onam",
+    "approx_date_2026": "2026-08-26",
+    "region": ["KL-01"],
+    "category": "Harvest",
+    "retail_impact": "Kerala's largest shopping festival; apparel, home decor, and gifting spike sharply for ~10 days."
+  },
+  {
+    "festival": "Ganesh Chaturthi",
+    "approx_date_2026": "2026-09-14",
+    "region": ["MH-01", "KA-01", "TS-01", "GJ-01"],
+    "category": "Hindu",
+    "retail_impact": "Strong regional uplift in decor, apparel, and festive essentials in Maharashtra, Karnataka, Telangana, Gujarat."
+  },
+  {
+    "festival": "Navratri / Durga Puja / Dussehra",
+    "approx_date_2026": "2026-10-11",
+    "region": ["All India"],
+    "category": "Hindu",
+    "retail_impact": "Nine-day national festival season; ethnic wear, jewelry, and home decor see the year's second-largest spike after Diwali."
+  },
+  {
+    "festival": "Karva Chauth",
+    "approx_date_2026": "2026-10-27",
+    "region": ["UP-01", "PB-01", "RJ-01", "MP-01"],
+    "category": "Hindu",
+    "retail_impact": "North Indian uplift in ethnic wear, jewelry (imitation), and beauty categories."
+  },
+  {
+    "festival": "Chhath Puja",
+    "approx_date_2026": "2026-11-05",
+    "region": ["BR-01"],
+    "category": "Regional",
+    "retail_impact": "Bihar's most significant festival; spikes in traditional apparel, puja essentials, and fruit/food baskets."
+  },
+  {
+    "festival": "Diwali",
+    "approx_date_2026": "2026-11-08",
+    "region": ["All India"],
+    "category": "National",
+    "retail_impact": "The single largest e-commerce sale event of the year across every category and region; platform-wide peak load."
+  },
+  {
+    "festival": "Kartik Purnima",
+    "approx_date_2026": "2026-11-24",
+    "region": ["OD-01", "BR-01", "UP-01"],
+    "category": "Hindu",
+    "retail_impact": "Minor regional uplift in puja essentials and apparel."
+  },
+  {
+    "festival": "Christmas",
+    "approx_date_2026": "2026-12-25",
+    "region": ["All India"],
+    "category": "National",
+    "retail_impact": "National gifting and year-end sale season; strong in Kerala, Northeast, and metro-adjacent Tier-2 cities."
+  }
+]

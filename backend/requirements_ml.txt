@@ -1,0 +1,21 @@
+# Machine learning extensions for TwinCart AI
+# Optional: install with: pip install -r requirements_ml.txt
+
+# Model training
+scikit-learn==1.5.*
+xgboost==2.1.*
+pandas==2.*
+numpy==1.26.*
+
+# Image generation (free, open-source)
+diffusers==0.31.*
+torch==2.3.*
+transformers==4.40.*
+Pillow==10.*
+accelerate==0.31.*
+
+# Hyperparameter optimization
+optuna==3.6.*
+
+# Model persistence
+joblib==1.4.*
