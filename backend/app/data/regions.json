@@ -1,0 +1,137 @@
+[
+  {
+    "region_id": "TN-01",
+    "state": "Tamil Nadu",
+    "languages": ["Tamil", "English"],
+    "top_categories": ["apparel", "silver jewelry (imitation)", "home textiles", "kitchenware"],
+    "price_sensitivity": 0.62,
+    "active_festivals": ["Pongal", "Aadi Sale", "Navratri Golu", "Diwali"],
+    "avg_temperature_c": 29.5
+  },
+  {
+    "region_id": "BR-01",
+    "state": "Bihar",
+    "languages": ["Hindi", "Bhojpuri", "Maithili"],
+    "top_categories": ["apparel", "footwear", "mobile accessories", "kitchenware"],
+    "price_sensitivity": 0.78,
+    "active_festivals": ["Chhath Puja", "Holi", "Diwali", "Makar Sankranti"],
+    "avg_temperature_c": 26.0
+  },
+  {
+    "region_id": "KL-01",
+    "state": "Kerala",
+    "languages": ["Malayalam", "English"],
+    "top_categories": ["monsoon apparel", "home decor", "gold jewelry (imitation)", "kitchenware"],
+    "price_sensitivity": 0.55,
+    "active_festivals": ["Vishu", "Onam", "Christmas", "Diwali"],
+    "avg_temperature_c": 27.8
+  },
+  {
+    "region_id": "UP-01",
+    "state": "Uttar Pradesh",
+    "languages": ["Hindi", "Urdu"],
+    "top_categories": ["apparel", "footwear", "mobile accessories", "beauty"],
+    "price_sensitivity": 0.74,
+    "active_festivals": ["Holi", "Diwali", "Karva Chauth", "Makar Sankranti"],
+    "avg_temperature_c": 25.5
+  },
+  {
+    "region_id": "MH-01",
+    "state": "Maharashtra",
+    "languages": ["Marathi", "Hindi", "English"],
+    "top_categories": ["apparel", "electronics accessories", "footwear", "beauty"],
+    "price_sensitivity": 0.58,
+    "active_festivals": ["Gudi Padwa", "Ganesh Chaturthi", "Diwali", "Navratri"],
+    "avg_temperature_c": 27.2
+  },
+  {
+    "region_id": "WB-01",
+    "state": "West Bengal",
+    "languages": ["Bengali", "Hindi", "English"],
+    "top_categories": ["apparel", "home textiles", "jewelry (imitation)", "kitchenware"],
+    "price_sensitivity": 0.66,
+    "active_festivals": ["Durga Puja", "Kali Puja", "Poila Boishakh", "Diwali"],
+    "avg_temperature_c": 26.9
+  },
+  {
+    "region_id": "RJ-01",
+    "state": "Rajasthan",
+    "languages": ["Hindi", "Rajasthani"],
+    "top_categories": ["apparel", "jewelry (imitation)", "home decor", "footwear"],
+    "price_sensitivity": 0.71,
+    "active_festivals": ["Teej", "Gangaur", "Diwali", "Makar Sankranti"],
+    "avg_temperature_c": 26.3
+  },
+  {
+    "region_id": "GJ-01",
+    "state": "Gujarat",
+    "languages": ["Gujarati", "Hindi", "English"],
+    "top_categories": ["apparel", "footwear", "home decor", "electronics accessories"],
+    "price_sensitivity": 0.6,
+    "active_festivals": ["Navratri", "Uttarayan", "Diwali", "Holi"],
+    "avg_temperature_c": 27.0
+  },
+  {
+    "region_id": "PB-01",
+    "state": "Punjab",
+    "languages": ["Punjabi", "Hindi", "English"],
+    "top_categories": ["apparel", "footwear", "home textiles", "beauty"],
+    "price_sensitivity": 0.57,
+    "active_festivals": ["Baisakhi", "Lohri", "Diwali", "Holi"],
+    "avg_temperature_c": 24.6
+  },
+  {
+    "region_id": "AP-01",
+    "state": "Andhra Pradesh",
+    "languages": ["Telugu", "English"],
+    "top_categories": ["apparel", "jewelry (imitation)", "home decor", "kitchenware"],
+    "price_sensitivity": 0.68,
+    "active_festivals": ["Ugadi", "Sankranti", "Diwali", "Dussehra"],
+    "avg_temperature_c": 29.0
+  },
+  {
+    "region_id": "TS-01",
+    "state": "Telangana",
+    "languages": ["Telugu", "Urdu", "English"],
+    "top_categories": ["apparel", "electronics accessories", "footwear", "beauty"],
+    "price_sensitivity": 0.64,
+    "active_festivals": ["Bathukamma", "Ugadi", "Diwali", "Bonalu"],
+    "avg_temperature_c": 28.4
+  },
+  {
+    "region_id": "KA-01",
+    "state": "Karnataka",
+    "languages": ["Kannada", "English", "Hindi"],
+    "top_categories": ["apparel", "electronics accessories", "footwear", "beauty"],
+    "price_sensitivity": 0.56,
+    "active_festivals": ["Ugadi", "Dasara (Mysuru)", "Diwali", "Ganesh Chaturthi"],
+    "avg_temperature_c": 26.5
+  },
+  {
+    "region_id": "MP-01",
+    "state": "Madhya Pradesh",
+    "languages": ["Hindi"],
+    "top_categories": ["apparel", "footwear", "kitchenware", "mobile accessories"],
+    "price_sensitivity": 0.75,
+    "active_festivals": ["Holi", "Diwali", "Navratri", "Makar Sankranti"],
+    "avg_temperature_c": 25.8
+  },
+  {
+    "region_id": "OD-01",
+    "state": "Odisha",
+    "languages": ["Odia", "Hindi"],
+    "top_categories": ["apparel", "home textiles", "kitchenware", "jewelry (imitation)"],
+    "price_sensitivity": 0.73,
+    "active_festivals": ["Rath Yatra", "Durga Puja", "Diwali", "Makar Sankranti"],
+    "avg_temperature_c": 27.5
+  },
+  {
+    "region_id": "AS-01",
+    "state": "Assam",
+    "languages": ["Assamese", "Bengali", "Hindi"],
+    "top_categories": ["apparel", "home textiles", "kitchenware", "beauty"],
+    "price_sensitivity": 0.7,
+    "active_festivals": ["Bihu", "Durga Puja", "Diwali", "Christmas"],
+    "avg_temperature_c": 24.9
+  }
+]
