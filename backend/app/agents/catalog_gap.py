@@ -40,8 +40,8 @@ _chain = _PROMPT | get_llm(temperature=0.1, fast=True) | JsonOutputParser()
 def run(state: TwinAIState) -> dict:
     """LangGraph node: detect catalog gaps for state['region_id']."""
     region_id = state["region_id"]
+    twin = regional_twin_store.get(region_id)
     try:
-        twin = regional_twin_store.get(region_id)
         gaps: list[str] = _chain.invoke({
             "region_id": region_id,
             "trends": ", ".join(state.get("trends") or []),
@@ -50,11 +50,16 @@ def run(state: TwinAIState) -> dict:
         })
         if not isinstance(gaps, list):
             gaps = list(gaps)
-        logger.info("[catalog_gap] %s → %s", region_id, gaps)
-        return {
-            "catalog_gaps": gaps,
-            "explanation_log": [f"Catalog Gaps ({region_id}): {', '.join(gaps)}"],
-        }
     except Exception as exc:
-        logger.error("[catalog_gap] failed for %s: %s", region_id, exc)
-        raise AgentExecutionError("catalog_gap", str(exc)) from exc
+        logger.warning("[catalog_gap] Groq/LLM failed for %s (%s), using domain twin fallback", region_id, exc)
+        gaps = [
+            f"Affordable {twin.top_categories[0]} value packs",
+            f"Regional artisanal {twin.top_categories[1]}",
+            "Local festive gift sets",
+        ]
+
+    logger.info("[catalog_gap] %s → %s", region_id, gaps)
+    return {
+        "catalog_gaps": gaps,
+        "explanation_log": [f"Catalog Gaps ({region_id}): {', '.join(gaps)}"],
+    }

@@ -1,10 +1,8 @@
-"""Orchestrator service — glue between FastAPI routers and the LangGraph pipeline.
+"""Orchestrator service — coordinates FastAPI routers with the LangGraph pipeline."""
 
-The TTL cache from core/cache.py is applied here so repeated requests
-for the same region within a 6-hour window don't trigger extra Groq calls.
-"""
 import asyncio
 import logging
+from typing import Optional
 
 from app.graph.workflow import compiled_workflow
 from app.graph.state import TwinAIState
@@ -12,31 +10,24 @@ from app.core.cache import cached, _campaign_cache
 
 logger = logging.getLogger(__name__)
 
-# Semaphore caps concurrent LangGraph runs to stay comfortably under
-# Groq's 30 RPM free-tier limit when batch-processing multiple regions.
 _SEMAPHORE = asyncio.Semaphore(5)
 
 
 @cached(_campaign_cache)
 async def run_campaign_pipeline(
     region_id: str,
-    segment_id: str | None = None,
+    segment_id: Optional[str] = None,
+    category: Optional[str] = None,
+    total_budget_inr: float = 50000.0,
 ) -> TwinAIState:
-    """Run the full TwinAI agent pipeline for one region.
-
-    Results are cached for 6 hours keyed on (region_id, segment_id).
-
-    Args:
-        region_id:  Target region code, e.g. "TN-01".
-        segment_id: Optional customer segment filter.
-
-    Returns:
-        The final TwinAIState after all agent nodes have run.
-    """
+    """Run the full TwinAI LangGraph agent pipeline for a region."""
     initial: TwinAIState = {
         "region_id": region_id,
-        "segment_id": segment_id,
+        "segment_id": segment_id or "students",
+        "category": category or "apparel",
+        "total_budget_inr": total_budget_inr,
         "trends": [],
+        "trend_details": [],
         "demand_forecast": {},
         "campaign_copy": [],
         "banner_briefs": [],
@@ -46,24 +37,14 @@ async def run_campaign_pipeline(
         "simulation_result": None,
         "explanation_log": [],
     }
-    logger.info("Orchestrator: starting pipeline for region=%s segment=%s", region_id, segment_id)
+    logger.info("Orchestrator: starting pipeline for region=%s segment=%s category=%s", region_id, segment_id, category)
     result: TwinAIState = await compiled_workflow.ainvoke(initial)
     logger.info("Orchestrator: pipeline complete for region=%s", region_id)
     return result
 
 
 async def run_batch(region_ids: list[str]) -> dict[str, TwinAIState]:
-    """Run the campaign pipeline for multiple regions concurrently.
-
-    A bounded semaphore (size 5) keeps total concurrent Groq calls well
-    under the 30 RPM free-tier limit.
-
-    Args:
-        region_ids: List of region codes to process.
-
-    Returns:
-        Dict mapping each region_id to its final TwinAIState.
-    """
+    """Run the campaign pipeline for multiple regions concurrently."""
     async def _one(region_id: str) -> tuple[str, TwinAIState]:
         async with _SEMAPHORE:
             state = await run_campaign_pipeline(region_id)

@@ -6,8 +6,8 @@ class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
     groq_api_key: str = "set-me-in-dot-env"
-    groq_model: str = "openai/gpt-oss-120b"
-    groq_model_fast: str = "openai/gpt-oss-20b"
+    groq_model: str = "llama-3.3-70b-versatile"
+    groq_model_fast: str = "llama-3.1-8b-instant"
     app_env: str = "development"
     log_level: str = "INFO"
     allowed_origins: str = "http://localhost:8501"

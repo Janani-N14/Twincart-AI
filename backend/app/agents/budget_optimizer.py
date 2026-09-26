@@ -1,83 +1,129 @@
-"""Budget Optimizer Agent.
+"""Budget Optimization Agent for TwinCart AI.
 
-Recommends how to split the marketing budget across channels (social,
-search, push notifications, email, influencer) based on region price
-sensitivity, demand forecast, and campaign context.  Uses the large model.
+Implements mathematical constrained allocation (linear programming / proportional ROI optimization)
+across marketing channels and regional hubs, rather than LLM guesswork.
+
+Channel Efficiency Coefficients:
+- WhatsApp Channels: High conversion in Tier-2/3, low CAC
+- Regional Social / Reels: High engagement for Gen-Z / students
+- Search Ads: High intent, moderate cost
+- In-App Push: Zero marginal cost, high retargeting conversion
+- Micro-Influencers: High trust for apparel/jewelry
+
+Solves: Maximize Expected ROI subject to sum(weights) = 1.0 and minimum channel floors.
 """
+
 import logging
+from typing import Any, Dict
 
-from langchain_core.prompts import ChatPromptTemplate
-from langchain_core.output_parsers import JsonOutputParser
+import numpy as np
+from scipy.optimize import linprog
 
-from app.core.llm import get_llm
-from app.core.exceptions import AgentExecutionError
 from app.graph.state import TwinAIState
 from app.twins.regional_twin import regional_twin_store
+from app.twins.segment_twin import segment_twin_store
 
 logger = logging.getLogger(__name__)
 
-_CHANNELS = ["social_media", "search_ads", "push_notifications", "email", "influencer"]
+CHANNELS = ["social_reels", "whatsapp_community", "search_ads", "in_app_push", "regional_influencers"]
 
-_PROMPT = ChatPromptTemplate.from_messages([
-    (
-        "system",
-        "You are TwinAI's Budget Optimization agent. "
-        "Allocate a marketing budget across these channels: "
-        f"{', '.join(_CHANNELS)}. "
-        "The allocation must sum to 1.0 (fractions, not percentages). "
-        "Base the split on region price sensitivity, top demand categories, "
-        "weather/festival context, and campaign goals. "
-        "Respond ONLY with a valid JSON object mapping channel name to fraction, e.g. "
-        '{{"social_media": 0.35, "search_ads": 0.25, ...}}. No other text.',
-    ),
-    (
-        "human",
-        "region_id:{region_id}\n"
-        "state:{state}\n"
-        "price_sensitivity:{sensitivity}\n"
-        "top_demand_categories:{top_demand}\n"
-        "weather_festival_signal:{weather}\n"
-        "number_of_campaigns:{num_campaigns}",
-    ),
-])
+# Base expected ROI multiplier per channel (₹ return per ₹1 spent)
+BASE_CHANNEL_ROI = {
+    "social_reels": 3.4,
+    "whatsapp_community": 4.2,
+    "search_ads": 2.8,
+    "in_app_push": 4.8,
+    "regional_influencers": 3.1,
+}
 
-_chain = _PROMPT | get_llm(temperature=0.2, fast=False) | JsonOutputParser()
+
+def optimize_channel_allocation(
+    price_sensitivity: float = 0.65,
+    is_festival: bool = True,
+    segment_id: str = "students",
+    total_budget_inr: float = 50000.0,
+) -> Dict[str, Any]:
+    """Solve constrained linear optimization for marketing budget allocation."""
+    # Adjust expected ROI per channel based on audience and festival context
+    roi_scores = BASE_CHANNEL_ROI.copy()
+
+    if segment_id == "students":
+        roi_scores["social_reels"] *= 1.35
+        roi_scores["in_app_push"] *= 1.20
+    elif segment_id == "homemakers":
+        roi_scores["whatsapp_community"] *= 1.40
+        roi_scores["regional_influencers"] *= 1.25
+    elif segment_id == "budget_shoppers":
+        roi_scores["whatsapp_community"] *= 1.30
+        roi_scores["in_app_push"] *= 1.35
+
+    if is_festival:
+        roi_scores["social_reels"] *= 1.25
+        roi_scores["whatsapp_community"] *= 1.20
+
+    # Sensitivity penalty: high price sensitivity favors direct low-CAC channels (WhatsApp, push)
+    if price_sensitivity > 0.7:
+        roi_scores["whatsapp_community"] *= 1.2
+        roi_scores["in_app_push"] *= 1.2
+        roi_scores["search_ads"] *= 0.85
+
+    # Linear program to maximize sum(roi_i * w_i) subject to:
+    # 1. sum(w_i) = 1.0
+    # 2. 0.08 <= w_i <= 0.45 (diversification bounds)
+    c = [-roi_scores[ch] for ch in CHANNELS]  # minimize negative ROI
+    A_eq = [[1.0] * len(CHANNELS)]
+    b_eq = [1.0]
+    bounds = [(0.08, 0.45) for _ in CHANNELS]
+
+    res = linprog(c, A_eq=A_eq, b_eq=b_eq, bounds=bounds, method="highs")
+
+    if res.success:
+        weights = res.x
+    else:
+        # Fallback proportional softmax
+        exp_roi = np.exp([roi_scores[ch] for ch in CHANNELS])
+        weights = exp_roi / np.sum(exp_roi)
+
+    allocation_pct = {ch: round(float(w), 3) for ch, w in zip(CHANNELS, weights)}
+    allocation_inr = {ch: round(float(w * total_budget_inr), 2) for ch, w in zip(CHANNELS, weights)}
+    expected_blended_roi = round(sum(roi_scores[ch] * w for ch, w in zip(CHANNELS, weights)), 2)
+
+    return {
+        "channel_shares": allocation_pct,
+        "channel_amounts_inr": allocation_inr,
+        "total_budget_inr": total_budget_inr,
+        "expected_blended_roi": expected_blended_roi,
+        "optimization_method": "Highs Linear Programming (Constrained ROI Maximization)",
+        "source": "heuristic_optimization",
+    }
 
 
 def run(state: TwinAIState) -> dict:
-    """LangGraph node: optimise budget allocation across channels."""
-    region_id = state["region_id"]
-    try:
-        twin = regional_twin_store.get(region_id)
-        forecast = state.get("demand_forecast") or {}
-        top_demand = sorted(forecast, key=forecast.get, reverse=True)[:3]  # type: ignore[arg-type]
+    """LangGraph node: optimize budget allocation."""
+    region_id = state.get("region_id", "TN-01")
+    twin = regional_twin_store.get(region_id)
+    segment_id = state.get("segment_id", "students")
+    total_budget = float(state.get("total_budget_inr", 50000.0))
+    is_fest = bool(twin.active_festivals)
 
-        allocation: dict[str, float] = _chain.invoke({
-            "region_id": region_id,
-            "state": twin.state,
-            "sensitivity": twin.price_sensitivity,
-            "top_demand": ", ".join(top_demand) or ", ".join(twin.top_categories[:3]),
-            "weather": state.get("weather_signal") or "no special signal",
-            "num_campaigns": len(state.get("campaign_copy") or []),
-        })
+    result = optimize_channel_allocation(
+        price_sensitivity=twin.price_sensitivity,
+        is_festival=is_fest,
+        segment_id=segment_id,
+        total_budget_inr=total_budget,
+    )
 
-        if not isinstance(allocation, dict):
-            allocation = {ch: round(1 / len(_CHANNELS), 3) for ch in _CHANNELS}
+    top_ch = max(result["channel_shares"], key=result["channel_shares"].get)
 
-        # Normalise to ensure sum == 1.0
-        total = sum(allocation.values())
-        if total > 0:
-            allocation = {k: round(v / total, 3) for k, v in allocation.items()}
+    logger.info("[budget_optimizer] %s → Top channel %s (%s)", region_id, top_ch, result["channel_shares"][top_ch])
 
-        logger.info("[budget_optimizer] %s → %s", region_id, allocation)
-        top_channel = max(allocation, key=allocation.get)  # type: ignore[arg-type]
-        return {
-            "budget_allocation": allocation,
-            "explanation_log": [
-                f"Budget Optimizer ({region_id}): top channel is {top_channel} "
-                f"({allocation[top_channel]:.0%})."
-            ],
-        }
-    except Exception as exc:
-        logger.error("[budget_optimizer] failed for %s: %s", region_id, exc)
-        raise AgentExecutionError("budget_optimizer", str(exc)) from exc
+    return {
+        "budget_allocation": result["channel_shares"],
+        "budget_amounts_inr": result["channel_amounts_inr"],
+        "budget_optimization_result": result,
+        "explanation_log": [
+            f"Budget Optimization ({region_id}): Optimal allocation allocates {result['channel_shares'][top_ch]:.1%} "
+            f"(₹{result['channel_amounts_inr'][top_ch]:,.2f}) to {top_ch.replace('_', ' ').title()} "
+            f"with projected {result['expected_blended_roi']}x blended ROI."
+        ],
+    }

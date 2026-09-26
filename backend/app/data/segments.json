@@ -1,0 +1,72 @@
+[
+  {
+    "id": "students",
+    "segment_id": "students",
+    "label": "College Students & Gen-Z",
+    "age_range": "16-24",
+    "budget_range": "₹400 - ₹1,500",
+    "income_bracket": "₹0 - ₹15,000 / month",
+    "preferred_categories": ["apparel", "mobile accessories", "footwear", "earphones", "beauty"],
+    "languages": ["English", "Hindi", "Tamil", "Telugu", "Marathi", "Bengali"],
+    "purchase_trigger": "Flash sales, viral social trends, aesthetic college fashion, pocket-money discounts",
+    "platform_behaviour": "Highly deal-driven; browses extensively at night (10 PM - 1 AM); heavy cart saving and coupon hunting.",
+    "price_sensitivity": 0.85,
+    "region_ids": ["TN-01", "MH-01", "KA-01", "UP-01", "WB-01", "GJ-01", "TS-01"]
+  },
+  {
+    "id": "working_professionals",
+    "segment_id": "working_professionals",
+    "label": "Young Working Professionals",
+    "age_range": "25-40",
+    "budget_range": "₹1,500 - ₹5,000",
+    "income_bracket": "₹35,000 - ₹1,20,000 / month",
+    "preferred_categories": ["apparel", "footwear", "electronics accessories", "beauty", "jewelry (imitation)"],
+    "languages": ["English", "Hindi", "Marathi", "Kannada", "Telugu", "Gujarati"],
+    "purchase_trigger": "Premium brand trust, fast 2-day delivery, office-ready styles, weekend festival shopping",
+    "platform_behaviour": "Values quality and reliable sizing; converts rapidly on weekend mornings; lower cart abandonment.",
+    "price_sensitivity": 0.50,
+    "region_ids": ["MH-01", "KA-01", "GJ-01", "PB-01", "TS-01", "TN-01"]
+  },
+  {
+    "id": "homemakers",
+    "segment_id": "homemakers",
+    "label": "Homemakers & Family Curators",
+    "age_range": "28-52",
+    "budget_range": "₹800 - ₹3,500",
+    "income_bracket": "₹20,000 - ₹60,000 / month household spend",
+    "preferred_categories": ["kitchenware", "home textiles", "home decor", "apparel", "jewelry (imitation)"],
+    "languages": ["Tamil", "Hindi", "Bhojpuri", "Bengali", "Odia", "Telugu", "Gujarati"],
+    "purchase_trigger": "Festival preparation, family gifting, vernacular video demonstrations, durable materials",
+    "platform_behaviour": "Builds seasonal wishlists 2-3 weeks before major festivals; responds strongly to vernacular reviews and WhatsApp shares.",
+    "price_sensitivity": 0.70,
+    "region_ids": ["TN-01", "BR-01", "UP-01", "RJ-01", "OD-01", "AS-01", "WB-01", "MP-01"]
+  },
+  {
+    "id": "budget_shoppers",
+    "segment_id": "budget_shoppers",
+    "label": "Value & Budget Shoppers",
+    "age_range": "18-55",
+    "budget_range": "₹300 - ₹1,200",
+    "income_bracket": "₹5,000 - ₹25,000 / month",
+    "preferred_categories": ["apparel", "footwear", "mobile accessories", "kitchenware"],
+    "languages": ["Hindi", "Bhojpuri", "Maithili", "Odia", "Bengali", "Assamese"],
+    "purchase_trigger": "BOGO offers, free shipping under ₹500, deep festival discounts, COD availability",
+    "platform_behaviour": "Strict price threshold checker; high drop-off if shipping fees appear; waits for mega sale midnight drops.",
+    "price_sensitivity": 0.90,
+    "region_ids": ["BR-01", "UP-01", "MP-01", "OD-01", "AS-01", "JH-01", "RJ-01"]
+  },
+  {
+    "id": "young_parents",
+    "segment_id": "young_parents",
+    "label": "Young Parents (Tier-2/3)",
+    "age_range": "24-38",
+    "budget_range": "₹1,000 - ₹4,000",
+    "income_bracket": "₹30,000 - ₹80,000 / month",
+    "preferred_categories": ["apparel", "footwear", "home textiles", "beauty", "electronics accessories"],
+    "languages": ["English", "Hindi", "Tamil", "Telugu", "Marathi", "Bengali"],
+    "purchase_trigger": "Seasonal kids wear, festival family matching outfits, cotton comfort, safety ratings",
+    "platform_behaviour": "Frequent repeat purchases; shops during afternoon downtime (1 PM - 4 PM); highly influenced by peer parent reviews.",
+    "price_sensitivity": 0.65,
+    "region_ids": ["TN-01", "MH-01", "KA-01", "AP-01", "WB-01", "PB-01", "GJ-01"]
+  }
+]

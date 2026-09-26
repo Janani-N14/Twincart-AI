@@ -54,14 +54,29 @@ _SEED_SEGMENTS: list[dict] = [
 ]
 
 
-class SegmentTwinStore:
-    """In-memory store for Customer Segment Digital Twins."""
+import json
+from pathlib import Path
 
-    def __init__(self) -> None:
-        self._segments: dict[str, CustomerSegmentTwin] = {
-            s["segment_id"]: CustomerSegmentTwin(**s) for s in _SEED_SEGMENTS
-        }
+_DATA_PATH = Path(__file__).resolve().parents[1] / "data" / "segments.json"
+
+
+class SegmentTwinStore:
+    """In-memory store for Customer Segment Digital Twins, backed by segments.json."""
+
+    def __init__(self, data_path: Path = _DATA_PATH) -> None:
+        self._data_path = data_path
+        self._segments: dict[str, CustomerSegmentTwin] = self._load()
         logger.info("SegmentTwinStore loaded %d segments", len(self._segments))
+
+    def _load(self) -> dict[str, CustomerSegmentTwin]:
+        if self._data_path.exists():
+            try:
+                raw: list[dict] = json.loads(self._data_path.read_text(encoding="utf-8"))
+                return {s["segment_id"]: CustomerSegmentTwin(**s) for s in raw}
+            except Exception as e:
+                logger.warning("Could not read %s, falling back to seed: %s", self._data_path, e)
+        return {s["segment_id"]: CustomerSegmentTwin(**s) for s in _SEED_SEGMENTS}
+
 
     def get(self, segment_id: str) -> CustomerSegmentTwin:
         seg = self._segments.get(segment_id)

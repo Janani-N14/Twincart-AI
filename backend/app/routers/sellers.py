@@ -1,6 +1,6 @@
 """FastAPI router — Seller Intelligence Agent."""
-import logging
 
+import logging
 from fastapi import APIRouter, HTTPException
 
 from app.models.seller import SellerQuestionRequest, SellerQuestionResponse
@@ -13,16 +13,14 @@ router = APIRouter()
 
 @router.post("/ask", response_model=SellerQuestionResponse, summary="Ask the Seller Intelligence Agent")
 async def ask_seller_agent(payload: SellerQuestionRequest) -> SellerQuestionResponse:
-    """Answer a seller's free-form question using regional twin data and the
-    festival calendar.
-
-    Responses for semantically similar questions are served from an
-    in-process semantic cache to reduce Groq API calls.
+    """Answer a seller's free-form question using regional digital twin forecasts,
+    festival calendars, and category benchmark pricing percentiles.
     """
     try:
         result = seller_intelligence.answer(
             question=payload.question,
             region_id=payload.region_id,
+            category=payload.category,
             segment_id=payload.segment_id,
         )
     except TwinAIError as exc:
@@ -35,6 +33,12 @@ async def ask_seller_agent(payload: SellerQuestionRequest) -> SellerQuestionResp
         question=payload.question,
         answer=result.get("answer", ""),
         supporting_data=result.get("supporting_data", {}),
-        confidence=result.get("confidence", "medium"),
+        confidence=result.get("confidence", "high"),
+        source=result.get("source", "model_and_heuristics"),
+        sources=result.get("sources", {
+            "pricing_benchmark": "heuristic",
+            "point_forecast": "model",
+            "explanation": "llm_explanation",
+        }),
         from_cache=result.get("from_cache", False),
     )
